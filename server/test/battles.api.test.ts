@@ -122,3 +122,19 @@ describe('missions', () => {
     expect(rows[0].p).toBe(10); // active day (5) + mission (5)
   });
 });
+
+describe('anti-cheat verification', () => {
+  it('admin can re-simulate a stored battle and it matches', async () => {
+    const { token } = await env.register('verifier');
+    await armUp(env, token, 10);
+    const r = await env.call(token, 'POST', '/api/battles/pve', { stage: 1, deployments: [{ troop: 'infantry', count: 10, side: 'east' }] });
+    const mod = await env.register('moddy');
+    await env.sql("UPDATE users SET role='moderator' WHERE id=$1", [mod.id]);
+    const v = await env.call(mod.token, 'GET', `/api/admin/battles/${r.body.battleId}/verify`);
+    expect(v.status).toBe(200);
+    expect(v.body.matches).toBe(true);
+    // Tampering with the stored result is detected.
+    await env.sql("UPDATE battles SET result = jsonb_set(result, '{stars}', '0') WHERE id=$1", [r.body.battleId]);
+    expect((await env.call(mod.token, 'GET', `/api/admin/battles/${r.body.battleId}/verify`)).body.matches).toBe(false);
+  });
+});

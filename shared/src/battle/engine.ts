@@ -424,3 +424,17 @@ export function simulateBattle(input: BattleInput, cfg: GameConfig, opts: { reco
 export function battleBuildings(defense: DefenseBuilding[]): DefenseBuilding[] {
   return defense.filter((d) => d.level >= 1);
 }
+
+/** Key-order-insensitive JSON (jsonb storage reorders object keys). */
+export function stableStringify(v: unknown): string {
+  if (Array.isArray(v)) return `[${v.map(stableStringify).join(',')}]`;
+  if (v && typeof v === 'object') {
+    return `{${Object.keys(v as object).sort().map((k) => `${JSON.stringify(k)}:${stableStringify((v as Record<string, unknown>)[k])}`).join(',')}}`;
+  }
+  return JSON.stringify(v);
+}
+
+/** True when two battle results are identical (used for replay checks and anti-cheat verification). */
+export function sameBattleResult(a: BattleResult, b: BattleResult): boolean {
+  return stableStringify(a) === stableStringify(b);
+}

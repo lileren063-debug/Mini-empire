@@ -41,3 +41,14 @@ describe('battle engine', () => {
     expect(archers.hqDestroyed).toBe(false);
   });
 });
+
+describe('result comparison', () => {
+  it('ignores key order (jsonb round-trips reorder keys)', async () => {
+    const { sameBattleResult } = await import('../src/index.js');
+    const r = simulateBattle({ seed: 5, defense: layout(2), deployments: [{ troop: 'infantry', count: 5, side: 'north' }], attackerMultiplier: 1 }, DEFAULT_CONFIG).result;
+    const reordered = JSON.parse(JSON.stringify(Object.fromEntries(Object.entries(r).reverse())));
+    expect(JSON.stringify(reordered)).not.toBe(JSON.stringify(r));
+    expect(sameBattleResult(reordered, r)).toBe(true);
+    expect(sameBattleResult({ ...r, stars: (r.stars + 1) % 4 }, r)).toBe(false);
+  });
+});

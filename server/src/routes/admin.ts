@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { BUILDINGS, MISSIONS, SEASON_STATES, TROOPS, TROOP_TYPES, buildConfig, simulateBattle, type Tunables } from '@mini-empire/shared';
+import { BUILDINGS, MISSIONS, SEASON_STATES, TROOPS, TROOP_TYPES, buildConfig, sameBattleResult, simulateBattle, type Tunables } from '@mini-empire/shared';
 import type { AppContext } from '../context.js';
 import { loadTunables } from '../context.js';
 import { withTx } from '../db.js';
@@ -289,7 +289,7 @@ export async function adminRoutes(app: FastifyInstance, ctx: AppContext) {
       throw new AppError(409, 'CONFIG_CHANGED', `Battle used config ${b.config_version}; current is ${ctx.cfg.version}. Load that config version to verify.`);
     }
     const { result } = simulateBattle(b.input, ctx.cfg);
-    return { matches: JSON.stringify(result) === JSON.stringify(b.result), stored: b.result, recomputed: result };
+    return { matches: sameBattleResult(result, b.result), stored: b.result, recomputed: result };
   });
 
   app.get('/admin/audit', async (req) => {
