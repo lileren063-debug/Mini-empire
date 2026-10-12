@@ -1,3 +1,4 @@
+import './loadEnv.js';
 /** Server configuration from environment variables. Never hardcode secrets. */
 function num(name: string, def: number): number {
   const v = process.env[name];

@@ -1,3 +1,4 @@
+import '../src/loadEnv.js';
 import pg from 'pg';
 import type { FastifyInstance } from 'fastify';
 import { buildConfig, type Tunables } from '@mini-empire/shared';

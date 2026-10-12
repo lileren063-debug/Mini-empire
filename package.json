@@ -9,7 +9,7 @@
     "client"
   ],
   "scripts": {
-    "dev": "npm run dev -w server & npm run dev -w client",
+    "dev": "node scripts/dev.mjs",
     "dev:server": "npm run dev -w server",
     "dev:client": "npm run dev -w client",
     "build": "npm run build -w client",
