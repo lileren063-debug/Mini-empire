@@ -52,14 +52,14 @@ function stage(id: number, name: string, power: number, opts: { towers: number; 
 export const PVE_STAGES: PveStage[] = [
   stage(1, 'Goblin Outpost', 1, { towers: 0, heavy: 0, walls: false }),
   stage(2, 'Bandit Camp', 1, { towers: 1, heavy: 0, walls: false }),
-  stage(3, 'Raider Stockade', 2, { towers: 1, heavy: 0, walls: true }),
-  stage(4, 'Orc Watchpost', 3, { towers: 2, heavy: 0, walls: true }),
-  stage(5, 'Mercenary Fort', 4, { towers: 2, heavy: 1, walls: true }),
-  stage(6, 'Dark Keep', 5, { towers: 3, heavy: 1, walls: true }),
-  stage(7, 'Warlord Citadel', 6, { towers: 4, heavy: 1, walls: true }),
-  stage(8, 'Iron Bastion', 7, { towers: 4, heavy: 2, walls: true }),
-  stage(9, 'Dragon Gate', 8, { towers: 5, heavy: 2, walls: true }),
-  stage(10, 'The Black Throne', 9, { towers: 5, heavy: 3, walls: true }),
+  stage(3, 'Raider Stockade', 2, { towers: 2, heavy: 0, walls: true }),
+  stage(4, 'Orc Watchpost', 3, { towers: 2, heavy: 1, walls: true }),
+  stage(5, 'Mercenary Fort', 4, { towers: 3, heavy: 1, walls: true }),
+  stage(6, 'Dark Keep', 4, { towers: 4, heavy: 1, walls: true }),
+  stage(7, 'Warlord Citadel', 5, { towers: 4, heavy: 2, walls: true }),
+  stage(8, 'Iron Bastion', 6, { towers: 5, heavy: 2, walls: true }),
+  stage(9, 'Dragon Gate', 7, { towers: 5, heavy: 3, walls: true }),
+  stage(10, 'The Black Throne', 8, { towers: 5, heavy: 3, walls: true }),
 ];
 
 /** PvE reward share by stars (0..3). A defeat (0 stars) gives nothing. */

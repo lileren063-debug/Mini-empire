@@ -191,7 +191,7 @@ export const BUILDINGS: Record<BuildingType, BuildingDef> = {
     maxCountByHq: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
     levels: levelTable(
       { gold: 300, wood: 500, stone: 100, costGrowth: 1.95, durationsSec: STD_DURATIONS, hp: 450, hpGrowth: 1.2 },
-      (level) => ({ damage: Math.round(14 * Math.pow(1.2, level - 1)), range: 6, attackInterval: 1.0 }),
+      (level) => ({ damage: Math.round(24 * Math.pow(1.22, level - 1)), range: 6, attackInterval: 0.9 }),
     ),
   },
   heavy_tower: {
@@ -205,7 +205,7 @@ export const BUILDINGS: Record<BuildingType, BuildingDef> = {
     maxCountByHq: [0, 0, 1, 1, 1, 2, 2, 2, 3, 3],
     levels: levelTable(
       { gold: 800, wood: 600, stone: 600, costGrowth: 1.9, durationsSec: STD_DURATIONS, hp: 900, hpGrowth: 1.2, hqRequired: (l) => Math.max(3, l - 1) },
-      (level) => ({ damage: Math.round(40 * Math.pow(1.2, level - 1)), range: 5, attackInterval: 2.5, splashRadius: 1.2 }),
+      (level) => ({ damage: Math.round(70 * Math.pow(1.22, level - 1)), range: 5, attackInterval: 2.5, splashRadius: 1.2 }),
     ),
   },
   wall: {
