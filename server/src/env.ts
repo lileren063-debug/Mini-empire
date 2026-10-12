@@ -15,6 +15,8 @@ export const env = {
   /** Salt for hashing client IPs (multi-account detection without storing raw IPs). */
   ipHashSalt: process.env.IP_HASH_SALT ?? 'dev-only-salt-change-me',
   corsOrigin: process.env.CORS_ORIGIN ?? '',
+  /** Set to true when behind a reverse proxy / load balancer that sets X-Forwarded-For. */
+  trustProxy: process.env.TRUST_PROXY === 'true',
   /** Path to the built client (served in production). */
   clientDist: process.env.CLIENT_DIST ?? new URL('../../client/dist', import.meta.url).pathname,
   /** ISO date for the first season start when the database has no season yet (defaults to now). */

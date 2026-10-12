@@ -35,7 +35,7 @@ export async function makeEnv(): Promise<TestEnv> {
   const clock = { now: T0, advance(ms: number) { this.now += ms; } };
   const ctx = createContext({ db, now: () => clock.now, telegramBotToken: BOT_TOKEN, sessionTtlHours: 24 * 400 });
   await bootstrapSeason(ctx, T0);
-  const app = await buildApp(ctx);
+  const app = await buildApp(ctx, { trustProxy: true });
   const call: TestEnv['call'] = async (token, method, url, body, headers = {}) => {
     const res = await app.inject({
       method: method as 'GET',

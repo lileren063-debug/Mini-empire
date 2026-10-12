@@ -17,7 +17,7 @@
     "migrate": "npm run migrate -w server",
     "typecheck": "tsc -p shared --noEmit && tsc -p server --noEmit && tsc -p client --noEmit",
     "test": "npm run test -w shared && npm run test -w server",
-    "balance": "npm run balance -w shared"
+    "balance": "npm run balance -w shared --"
   },
   "engines": {
     "node": ">=20"

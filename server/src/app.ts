@@ -15,8 +15,9 @@ import { seasonRoutes } from './routes/season.js';
 import { profileRoutes } from './routes/profile.js';
 import { adminRoutes } from './routes/admin.js';
 
-export async function buildApp(ctx: AppContext, opts: { logger?: boolean; clientDist?: string; corsOrigin?: string } = {}): Promise<FastifyInstance> {
-  const app = Fastify({ logger: opts.logger ?? false, bodyLimit: 64 * 1024, trustProxy: true });
+export async function buildApp(ctx: AppContext, opts: { logger?: boolean; clientDist?: string; corsOrigin?: string; trustProxy?: boolean } = {}): Promise<FastifyInstance> {
+  // Only trust X-Forwarded-For when running behind a reverse proxy (otherwise clients could spoof their IP).
+  const app = Fastify({ logger: opts.logger ?? false, bodyLimit: 64 * 1024, trustProxy: opts.trustProxy ?? false });
 
   // Security headers.
   app.addHook('onSend', async (_req, reply) => {
