@@ -59,9 +59,8 @@ createuser -P mini            # password e.g. mini_dev_password
 createdb -O mini mini_empire
 createdb -O mini mini_empire_test
 
-# 3. Configure
+# 3. Configure (the root .env file is loaded automatically)
 cp .env.example .env          # edit DATABASE_URL / TEST_DATABASE_URL
-export $(grep -v '^#' .env | xargs)   # or use your preferred env loader
 
 # 4. Migrate (the server also migrates automatically on start)
 npm run migrate
@@ -70,6 +69,33 @@ npm run migrate
 npm run dev
 # open http://localhost:5173 and create a kingdom
 ```
+
+### Windows + VS Code
+
+1. Install **Node.js 22 LTS** (nodejs.org), **PostgreSQL 16** (postgresql.org/download/windows — note the password
+   you choose for the `postgres` user), **Git** and **VS Code**.
+2. In VS Code: *Terminal → New Terminal* (PowerShell), then:
+   ```powershell
+   git clone -b claude/mini-empire-strategy-game-8k1bxl https://github.com/lileren063-debug/Mini-empire.git
+   cd Mini-empire
+   npm install
+   ```
+3. Create the database user and databases (PostgreSQL's `bin` folder, e.g. `C:\Program Files\PostgreSQL\16\bin`, must be on PATH):
+   ```powershell
+   psql -U postgres -c "CREATE USER mini WITH PASSWORD 'mini_dev_password' CREATEDB;"
+   psql -U postgres -c "CREATE DATABASE mini_empire OWNER mini;"
+   psql -U postgres -c "CREATE DATABASE mini_empire_test OWNER mini;"
+   ```
+4. Copy the settings file: `Copy-Item .env.example .env`, then edit `.env` and set
+   `DATABASE_URL=postgres://mini:mini_dev_password@localhost:5432/mini_empire` and
+   `TEST_DATABASE_URL=postgres://mini:mini_dev_password@localhost:5432/mini_empire_test`.
+   (`.env` is read automatically — no need to set environment variables by hand.)
+5. Run:
+   ```powershell
+   npm run migrate
+   npm run dev
+   ```
+   Open **http://localhost:5173**. Stop with `Ctrl+C`. Optional: `npm test` (64 tests).
 
 Production-like run (API serves the built client on one port):
 
