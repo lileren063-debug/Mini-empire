@@ -72,6 +72,11 @@ npm run dev
 
 ### Windows + VS Code
 
+**Shortcut:** after installing Node.js and PostgreSQL, double-click `baslat.bat` in the project folder. It creates the
+database and `.env` on first run, installs packages, migrates and opens the game in the browser.
+
+Manual steps:
+
 1. Install **Node.js 22 LTS** (nodejs.org), **PostgreSQL 16** (postgresql.org/download/windows — note the password
    you choose for the `postgres` user), **Git** and **VS Code**.
 2. In VS Code: *Terminal → New Terminal* (PowerShell), then:
