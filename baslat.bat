@@ -14,8 +14,7 @@ if errorlevel 1 (
 
 where psql >nul 2>nul
 if errorlevel 1 (
-  if exist "C:\Program Files\PostgreSQL\16\bin\psql.exe" set "PATH=%PATH%;C:\Program Files\PostgreSQL\16\bin"
-  if exist "C:\Program Files\PostgreSQL\17\bin\psql.exe" set "PATH=%PATH%;C:\Program Files\PostgreSQL\17\bin"
+  for /d %%D in ("C:\Program Files\PostgreSQL\*") do if exist "%%D\bin\psql.exe" set "PATH=%PATH%;%%D\bin"
 )
 where psql >nul 2>nul
 if errorlevel 1 (
