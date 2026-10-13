@@ -2,13 +2,14 @@ import '../src/loadEnv.js';
 import pg from 'pg';
 import type { FastifyInstance } from 'fastify';
 import { buildConfig, type Tunables } from '@mini-empire/shared';
-import { createPool } from '../src/db.js';
+import { createPool, isEmbedded } from '../src/db.js';
 import { createContext, type AppContext } from '../src/context.js';
 import { buildApp } from '../src/app.js';
 import { migrate } from '../src/migrate.js';
 import { bootstrapSeason } from '../src/services/season.js';
 
-export const TEST_DB = process.env.TEST_DATABASE_URL ?? 'postgres://mini:mini_dev_password@localhost:5432/mini_empire_test';
+/** A PostgreSQL URL, or `pglite:memory` (default) for a fresh embedded database per test file. */
+export const TEST_DB = process.env.TEST_DATABASE_URL || 'pglite:memory';
 export const T0 = Date.UTC(2026, 0, 1, 12, 0, 0);
 export const BOT_TOKEN = '123456:TEST-BOT-TOKEN';
 
@@ -27,12 +28,14 @@ export interface TestEnv {
 
 /** Fresh schema + app with a controllable server clock. */
 export async function makeEnv(): Promise<TestEnv> {
-  const admin = new pg.Client({ connectionString: TEST_DB });
-  await admin.connect();
-  await admin.query('DROP SCHEMA public CASCADE; CREATE SCHEMA public;');
-  await admin.end();
-  await migrate(TEST_DB, () => undefined);
+  if (!isEmbedded(TEST_DB)) {
+    const admin = new pg.Client({ connectionString: TEST_DB });
+    await admin.connect();
+    await admin.query('DROP SCHEMA public CASCADE; CREATE SCHEMA public;');
+    await admin.end();
+  }
   const db = createPool(TEST_DB);
+  await migrate(db, () => undefined);
   const clock = { now: T0, advance(ms: number) { this.now += ms; } };
   const ctx = createContext({ db, now: () => clock.now, telegramBotToken: BOT_TOKEN, sessionTtlHours: 24 * 400 });
   await bootstrapSeason(ctx, T0);

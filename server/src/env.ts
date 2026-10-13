@@ -9,7 +9,8 @@ export const env = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
   port: num('PORT', 3000),
   host: process.env.HOST ?? '0.0.0.0',
-  databaseUrl: process.env.DATABASE_URL ?? 'postgres://mini:mini_dev_password@localhost:5432/mini_empire',
+  /** PostgreSQL URL, or `pglite:<folder>` for the embedded database (default: no installation needed). */
+  databaseUrl: process.env.DATABASE_URL || 'pglite:data/oyun-veritabani',
   sessionTtlHours: num('SESSION_TTL_HOURS', 24 * 30),
   /** Telegram bot token for Mini App initData verification. Leave empty to disable Telegram login. */
   telegramBotToken: process.env.TELEGRAM_BOT_TOKEN ?? '',

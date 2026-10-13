@@ -60,7 +60,7 @@ export async function mutation<T>(ctx: AppContext, req: FastifyRequest, fn: (tx:
         const prev = (await tx.query('SELECT request_hash, response FROM idempotency_keys WHERE user_id=$1 AND key=$2', [user.id, key])).rows[0];
         if (prev.request_hash !== hash) {
           // Logged outside the transaction so the record survives the rollback.
-          await logSuspicious(ctx, user.id, 'idempotency_key_reuse', 'low', { url: req.url });
+          void logSuspicious(ctx, user.id, 'idempotency_key_reuse', 'low', { url: req.url });
           throw new AppError(422, 'IDEMPOTENCY_MISMATCH', 'This request key was already used for a different request.');
         }
         return prev.response as T;

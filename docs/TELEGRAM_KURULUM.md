@@ -1,7 +1,21 @@
 # Mini Empire'ı Telegram'da yayınlama (adım adım)
 
-Telegram Mini App'ler internette **HTTPS** adresi olan bir sunucuda çalışmak zorundadır; bilgisayarınızdaki
-`localhost` Telegram'dan açılamaz. Bu yüzden üç adım var: **bot oluştur → oyunu internete koy → ikisini bağla.**
+Telegram Mini App'ler bir **HTTPS** adresinden açılır. İki yol var:
+
+* **Yöntem A — Kendi bilgisayarınızdan (en kolay, ücretsiz):** `telegram-baslat.bat` çift tıklanır; oyun, ücretsiz
+  bir Cloudflare tüneli üzerinden geçici bir https adresi alır. **Pencere açık kaldığı sürece** oyun Telegram'da çalışır.
+* **Yöntem B — İnternette sürekli açık (Render.com):** bilgisayarınız kapalıyken de çalışır. Aşağıdaki 2. bölüm.
+
+## Yöntem A: kendi bilgisayarınızdan
+1. **Node.js LTS** kurun (https://nodejs.org) ve bilgisayarı yeniden başlatın. PostgreSQL **gerekmez** —
+   oyun kendi gömülü veritabanını kullanır (`data/` klasörü).
+2. BotFather'dan bir bot ve token alın (aşağıdaki 1. bölüm). Başka bir programın kullandığı bir botun token'ını
+   **kullanmayın**; o program da aynı anda çalışırsa ikisi çakışır. Bu oyun için yeni bir bot açın.
+3. Proje klasöründeki **`telegram-baslat.bat`** dosyasına çift tıklayın. İlk seferde token'ı soracak; yapıştırıp Enter'a basın.
+4. "HAZIR!" yazısını görünce Telegram'da botunuza `/start` yazın ve **🏰 Oyunu Aç**'a dokunun.
+
+Not: tünel adresi her başlatmada değişir; sunucu bot ayarlarını her açılışta yeni adrese göre kendisi günceller.
+Bilgisayar kapanınca veya pencere kapanınca oyun durur, oyuncuların verileri `data/` klasöründe saklı kalır.
 
 ## 1. BotFather ile bot oluşturun
 1. Telegram'da **@BotFather**'ı açın ve `/newbot` yazın.
@@ -9,7 +23,7 @@ Telegram Mini App'ler internette **HTTPS** adresi olan bir sunucuda çalışmak 
 3. Kullanıcı adını yazın; `bot` ile bitmeli (örn. `MiniEmpireGameBot`).
 4. BotFather size bir **token** verir: `123456789:AA...` gibi. **Kimseyle paylaşmayın**, bir yere kaydedin.
 
-## 2. Oyunu internete koyun (Render.com, ücretsiz katman)
+## 2. (Yöntem B) Oyunu internete koyun (Render.com, ücretsiz katman)
 1. https://render.com adresinde GitHub hesabınızla kaydolun.
 2. **New → Blueprint** seçin, `Mini-empire` deposunu ve `claude/mini-empire-strategy-game-8k1bxl` dalını seçin.
    Render, depodaki `render.yaml` dosyasını okuyup bir web servisi ve bir PostgreSQL veritabanı oluşturur.

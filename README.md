@@ -48,7 +48,8 @@ mini-empire/
 
 ## Quick start (clean machine)
 
-Requirements: **Node.js ≥ 20** (22 recommended) and **PostgreSQL ≥ 14**.
+Requirements: **Node.js ≥ 20** (22 recommended). PostgreSQL ≥ 14 is recommended for production; for local play
+the server uses a built-in embedded PostgreSQL (PGlite, stored in `./data`) when `DATABASE_URL` is empty.
 
 ```bash
 # 1. Install dependencies (npm workspaces)
@@ -72,8 +73,9 @@ npm run dev
 
 ### Windows + VS Code
 
-**Shortcut:** after installing Node.js and PostgreSQL, double-click `baslat.bat` in the project folder. It creates the
-database and `.env` on first run, installs packages, migrates and opens the game in the browser.
+**Shortcut:** after installing Node.js, double-click `baslat.bat` (play in the browser) or `telegram-baslat.bat`
+(play inside Telegram through a free Cloudflare tunnel — see [docs/TELEGRAM_KURULUM.md](docs/TELEGRAM_KURULUM.md)).
+No PostgreSQL installation is needed for local play.
 
 Manual steps:
 

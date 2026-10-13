@@ -9,8 +9,8 @@ async function main() {
   if (env.nodeEnv === 'production' && env.ipHashSalt === 'dev-only-salt-change-me') {
     throw new Error('Set IP_HASH_SALT in production.');
   }
-  await migrate(env.databaseUrl);
   const db = createPool(env.databaseUrl);
+  await migrate(db);
   const ctx = createContext({ db, telegramBotToken: env.telegramBotToken, ipHashSalt: env.ipHashSalt, sessionTtlHours: env.sessionTtlHours });
   await loadTunables(ctx);
   await bootstrapSeason(ctx, env.firstSeasonStart ? Date.parse(env.firstSeasonStart) : undefined);
