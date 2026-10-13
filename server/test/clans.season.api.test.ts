@@ -202,3 +202,23 @@ describe('telegram identity', () => {
     expect(forged.status).toBe(401);
   });
 });
+
+describe('telegram bot webhook', () => {
+  it('rejects requests without the secret and answers /start with a Mini App button', async () => {
+    const { buildApp } = await import('../src/app.js');
+    const { webhookSecret } = await import('../src/telegramBot.js');
+    const calls: { url: string; body: any }[] = [];
+    const fetchFn = (async (url: string, init: any) => { calls.push({ url, body: JSON.parse(init.body) }); return { json: async () => ({ ok: true }) }; }) as any;
+    const app = await buildApp(env.ctx, { bot: { publicUrl: 'https://game.example.com', fetchFn } });
+    await app.ready();
+    expect(calls.map((c) => c.url.split('/').pop())).toEqual(['setWebhook', 'setChatMenuButton']);
+    const update = { message: { chat: { id: 42 }, text: '/start' } };
+    expect((await app.inject({ method: 'POST', url: '/api/telegram/webhook', payload: update })).statusCode).toBe(401);
+    const ok = await app.inject({ method: 'POST', url: '/api/telegram/webhook', payload: update, headers: { 'x-telegram-bot-api-secret-token': webhookSecret(BOT_TOKEN) } });
+    expect(ok.statusCode).toBe(200);
+    const send = calls.find((c) => c.url.endsWith('/sendMessage'))!;
+    expect(send.body.chat_id).toBe(42);
+    expect(send.body.reply_markup.inline_keyboard[0][0].web_app.url).toBe('https://game.example.com');
+    await app.close();
+  });
+});

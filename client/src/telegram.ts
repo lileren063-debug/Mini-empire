@@ -4,7 +4,17 @@
  */
 declare global {
   interface Window {
-    Telegram?: { WebApp?: { initData: string; ready(): void; expand(): void; colorScheme?: string } };
+    Telegram?: {
+      WebApp?: {
+        initData: string;
+        ready(): void;
+        expand(): void;
+        colorScheme?: string;
+        disableVerticalSwipes?: () => void;
+        setHeaderColor?: (c: string) => void;
+        setBackgroundColor?: (c: string) => void;
+      };
+    };
   }
 }
 
@@ -27,5 +37,9 @@ export async function telegramInitData(): Promise<string | null> {
   if (!wa?.initData) return null;
   wa.ready();
   wa.expand();
+  // Panning the kingdom map must not swipe the Mini App closed.
+  wa.disableVerticalSwipes?.();
+  wa.setHeaderColor?.('#2b1d12');
+  wa.setBackgroundColor?.('#1e140c');
   return wa.initData;
 }

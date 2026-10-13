@@ -42,6 +42,11 @@ PostgreSQL 16 during development.)
 
 ## Telegram Mini App
 
+Step-by-step guide (Turkish): [TELEGRAM_KURULUM.md](TELEGRAM_KURULUM.md). One-click hosting: `render.yaml` (Render Blueprint).
+With `TELEGRAM_BOT_TOKEN` and `PUBLIC_URL` set, the server registers the bot webhook and the "Oyna" menu button on start,
+and answers `/start` with an "Oyunu Aç" Mini App button.
+
+
 1. Create a bot with @BotFather, set `TELEGRAM_BOT_TOKEN` on the server.
 2. Deploy the game on a public HTTPS URL and configure it as the bot's Mini App / menu button URL.
 3. When opened inside Telegram, the client loads `telegram-web-app.js`, sends the raw signed `initData` to

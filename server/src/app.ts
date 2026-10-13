@@ -14,8 +14,9 @@ import { worldRoutes } from './routes/world.js';
 import { seasonRoutes } from './routes/season.js';
 import { profileRoutes } from './routes/profile.js';
 import { adminRoutes } from './routes/admin.js';
+import { registerTelegramBot, type BotOptions } from './telegramBot.js';
 
-export async function buildApp(ctx: AppContext, opts: { logger?: boolean; clientDist?: string; corsOrigin?: string; trustProxy?: boolean } = {}): Promise<FastifyInstance> {
+export async function buildApp(ctx: AppContext, opts: { logger?: boolean; clientDist?: string; corsOrigin?: string; trustProxy?: boolean; bot?: Omit<BotOptions, 'token'> } = {}): Promise<FastifyInstance> {
   // Only trust X-Forwarded-For when running behind a reverse proxy (otherwise clients could spoof their IP).
   const app = Fastify({ logger: opts.logger ?? false, bodyLimit: 64 * 1024, trustProxy: opts.trustProxy ?? false });
 
@@ -56,6 +57,8 @@ export async function buildApp(ctx: AppContext, opts: { logger?: boolean; client
     req.log.error(err);
     return reply.code(500).send({ error: { code: 'INTERNAL', message: 'Something went wrong on our side.' } });
   });
+
+  if (ctx.telegramBotToken && opts.bot?.publicUrl) await registerTelegramBot(app, { ...opts.bot, token: ctx.telegramBotToken });
 
   app.get('/api/health', async () => {
     await ctx.db.query('SELECT 1');

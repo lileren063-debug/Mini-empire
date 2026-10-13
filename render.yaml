@@ -1,0 +1,24 @@
+# Render.com blueprint: one web service (Docker) + one PostgreSQL database.
+# Render dashboard → New → Blueprint → select this repository/branch.
+services:
+  - type: web
+    name: mini-empire
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mini-empire-db
+          property: connectionString
+      - key: IP_HASH_SALT
+        generateValue: true
+      - key: TRUST_PROXY
+        value: "true"
+      - key: NODE_ENV
+        value: production
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false # paste the token from @BotFather in the Render dashboard
+databases:
+  - name: mini-empire-db
+    plan: free

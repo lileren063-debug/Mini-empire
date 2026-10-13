@@ -13,6 +13,8 @@ export const env = {
   sessionTtlHours: num('SESSION_TTL_HOURS', 24 * 30),
   /** Telegram bot token for Mini App initData verification. Leave empty to disable Telegram login. */
   telegramBotToken: process.env.TELEGRAM_BOT_TOKEN ?? '',
+  /** Public HTTPS address of this server, e.g. https://mini-empire.onrender.com (needed for the Telegram bot). */
+  publicUrl: process.env.PUBLIC_URL ?? process.env.RENDER_EXTERNAL_URL ?? '',
   /** Salt for hashing client IPs (multi-account detection without storing raw IPs). */
   ipHashSalt: process.env.IP_HASH_SALT ?? 'dev-only-salt-change-me',
   corsOrigin: process.env.CORS_ORIGIN ?? '',

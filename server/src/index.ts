@@ -17,7 +17,7 @@ async function main() {
   await seasonTick(ctx);
   // The season state machine advances on server time, checked periodically (idempotent).
   setInterval(() => seasonTick(ctx).catch((e) => console.error('season tick failed', e)), env.seasonTickSeconds * 1000).unref();
-  const app = await buildApp(ctx, { logger: env.nodeEnv !== 'test', clientDist: env.clientDist, corsOrigin: env.corsOrigin, trustProxy: env.trustProxy });
+  const app = await buildApp(ctx, { logger: env.nodeEnv !== 'test', clientDist: env.clientDist, corsOrigin: env.corsOrigin, trustProxy: env.trustProxy, bot: { publicUrl: env.publicUrl, log: (m) => console.log(m) } });
   await app.listen({ port: env.port, host: env.host });
 }
 
